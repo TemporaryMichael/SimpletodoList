@@ -131,13 +131,6 @@ button {
   .add-task {
     flex-direction: column;
   }
-  .task--section {
-    background: linear-gradient(
-      90deg,
-      rgb(235, 124, 255) 0%,
-      var(--main-color) 100%
-    );
-  }
 }
 @media screen and (max-width: 250px) {
   html {
