@@ -36,10 +36,8 @@ const createTask = function (
     isLocal ? "" : "hidden"
   }" data-index = ${taskIndex}>
   <form class="task-form">
-    <input id="task-${taskIndex}" type="checkbox" ${done ? "checked" : ""}/>
-    <label for="task-${taskIndex}" class="text-task ${
-    done ? "done-task" : ""
-  }">${textTask}</label>
+    <input type="checkbox" ${done ? "checked" : ""}/>
+    <div class="text-task ${done ? "done-task" : ""}">${textTask}</div>
   </form>
   <button class="remove-task frame-button button-hov">
     <svg
@@ -65,15 +63,19 @@ const createTask = function (
 };
 tasks.addEventListener("click", function (e) {
   // DONE TASK
-  if (e.target.localName === "input") {
+  if (!e.target.closest(".task")) return;
+  if (!e.target.closest(".remove-task")) {
     const taskDone = e.target.closest(".task");
+    const uncheckTask = taskDone.querySelector("input");
+    if (!e.target.closest("input")) uncheckTask.checked = !uncheckTask.checked;
     const textDoneTask = taskDone.querySelector(".text-task");
     const findTaskIndex = localTasks.findIndex(
       (t) =>
         t.index === taskDone.dataset.index.padStart(5, 0) ||
         t.index === String(+taskDone.dataset.index + 1).padStart(5, 0)
     );
-    localTasks[findTaskIndex].done = !localTasks[findTaskIndex].done;
+    if (findTaskIndex >= 0)
+      localTasks[findTaskIndex].done = !localTasks[findTaskIndex].done;
     // const getTaskByIndex = localTasks.find(ind=>ind.index === )
     textDoneTask.classList.toggle("done-task");
     updateStorage();
@@ -89,6 +91,8 @@ tasks.addEventListener("click", function (e) {
     updateStorage();
     setTimeout(() => {
       selectTask.remove();
+      if (localTasks.length <= 0)
+        createTask("Add your daily tasks", undefined, false, false);
     }, 300);
   }
 });

@@ -26,10 +26,12 @@ html {
   font-size: 10px;
   color: #5c5c5c;
   background: linear-gradient(
-    140deg,
+    90deg,
     var(--lighten-color) 0%,
     var(--main-color) 100%
   );
+  background-position: center;
+  background-size: cover;
 }
 .container {
   display: flex;
@@ -101,10 +103,12 @@ html {
   transform-origin: left;
 }
 .task-form {
-  display: inline-block;
+  display: flex;
+  gap: 10px;
   font-size: 2rem;
   font-weight: 500;
   width: 90%;
+  cursor: default;
 }
 .task-form input {
   border: none;
@@ -161,10 +165,7 @@ button {
   .add-task .input-task--text {
     padding: 2rem;
   }
-  .task-form {
-    display: flex;
-    gap: 10px;
-  }
+
   @media screen and (max-width: 250px) {
     html {
       font-size: 7px;
