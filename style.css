@@ -24,7 +24,6 @@ html {
 .container {
   display: flex;
   justify-content: center;
-  height: 100vh;
 }
 
 .frame {
@@ -98,9 +97,14 @@ html {
   width: 90%;
 }
 .task-form input {
+  border: none;
+  outline: none;
   filter: hue-rotate(280deg);
   transform: scale(110%);
   color: white;
+}
+.task-form input:focus{
+  outline: 2px solid red;
 }
 
 .remove-task {
@@ -149,7 +153,7 @@ button {
   }
   .task-form {
     display: flex;
-    gap: 5px;
+    gap: 10px;
 }
 @media screen and (max-width: 250px) {
   html {
