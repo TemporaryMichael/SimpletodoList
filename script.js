@@ -12,14 +12,26 @@ addTask.addEventListener("submit", function (e) {
   const taskText = inputTask.value;
   if (taskText === "") return;
   createTask(taskText);
-  localTasks.push(taskText);
+  localTasks.push({ taskText, index: localTasks.length, done: false });
   updateStorage();
   inputTask.value = "";
 });
-const createTask = function (textTask, isLocal = false) {
+const createTask = function (
+  textTask,
+  taskIndex = localTasks.length,
+  done = false,
+  isLocal = false
+) {
   const markup = `          
-  <div class="task ${isLocal ? "" : "hidden"}">
-  <div class="text-task">${textTask}</div>
+  <div class="task sample-task ${
+    isLocal ? "" : "hidden"
+  }" data-index = ${taskIndex}>
+  <form class="task-form">
+    <input id="task-${taskIndex}" type="checkbox" ${done ? "checked" : ""}/>
+    <label for="task-${taskIndex}" class="text-task ${
+    done ? "done-task" : ""
+  }">${textTask}</label>
+  </form>
   <button class="remove-task frame-button button-hov">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -43,27 +55,35 @@ const createTask = function (textTask, isLocal = false) {
   }, 10);
 };
 tasks.addEventListener("click", function (e) {
+  // DONE TASK
+  if (e.target.localName === "input") {
+    const taskDone = e.target.closest(".task");
+    const textDoneTask = taskDone.querySelector(".text-task");
+    const indexDoneTask = +taskDone.dataset.index;
+    textDoneTask.classList.toggle("done-task");
+    localTasks[indexDoneTask].done = !localTasks[indexDoneTask].done;
+    updateStorage();
+  }
+  // DELETE TASK
   if (e.target.closest(".remove-task")) {
     const selectTask = e.target.closest(".task");
-    const getText = selectTask.querySelector(".text-task").textContent;
     localTasks.splice(
-      localTasks.findIndex((i) => i === getText),
+      localTasks.findIndex((ind) => +ind.index === +selectTask.dataset.index),
       1
     );
-    updateStorage();
-    console.log(getText);
-    console.log(localTasks);
     selectTask.classList.add("hidden");
+    updateStorage();
     setTimeout(() => {
       selectTask.remove();
-    }, 200);
+    }, 300);
   }
 });
+
 const updateStorage = function () {
   localStorage.setItem("tasks", JSON.stringify(localTasks));
 };
 
-if (getLocal.length > 0) {
+if (localTasks.length > 0) {
   task.remove();
-  getLocal.forEach((t) => createTask(t, true));
+  getLocal.forEach((t) => createTask(t.taskText, t.index, t.done, true));
 }
