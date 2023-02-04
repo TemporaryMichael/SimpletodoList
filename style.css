@@ -1,5 +1,8 @@
 :root {
-  --main-color: #8d37ff;
+  --main-color: #339af0;
+  --lighten-color: #bac8ff;
+  --darken-color: #364fc7;
+  --scroll-color: #3b5bdb;
 }
 * {
   margin: 0;
@@ -10,21 +13,21 @@
 }
 *:focus,
 *:focus-visible {
-  outline: 2px solid #44009c;
+  outline: 2px solid var(--darken-color);
 }
 ::-webkit-scrollbar {
-  background-color: #4e00b4;
-  width: 10px;
+  background-color: var(--lighten-color);
+  width: 0.7rem;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #b379ff;
+  background-color: var(--scroll-color);
 }
 html {
   font-size: 10px;
   color: #5c5c5c;
   background: linear-gradient(
-    90deg,
-    rgb(235, 124, 255) 0%,
+    140deg,
+    var(--lighten-color) 0%,
     var(--main-color) 100%
   );
 }
@@ -111,7 +114,7 @@ html {
   color: white;
 }
 .task-form input:focus {
-  outline: 2px solid red;
+  outline: 2px solid black;
 }
 
 .remove-task {
