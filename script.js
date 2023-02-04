@@ -66,7 +66,6 @@ tasks.addEventListener("click", function (e) {
     const findTaskIndex = localTasks.findIndex(
       (t) => t.index === taskDone.dataset.index
     );
-    console.log(taskDone.dataset.index);
     localTasks[findTaskIndex].done = !localTasks[findTaskIndex].done;
     // const getTaskByIndex = localTasks.find(ind=>ind.index === )
     textDoneTask.classList.toggle("done-task");
