@@ -135,6 +135,9 @@ button {
   .add-task {
     flex-direction: column;
   }
+  .add-task .add-task--button {
+    padding: 2rem 2rem;
+  }
 }
 @media screen and (max-width: 250px) {
   html {
