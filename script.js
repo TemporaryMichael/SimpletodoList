@@ -12,13 +12,17 @@ addTask.addEventListener("submit", function (e) {
   const taskText = inputTask.value;
   if (taskText === "") return;
   createTask(taskText);
-  localTasks.push({ taskText, index: localTasks.length, done: false });
+  localTasks.push({
+    taskText,
+    index: String(new Date().getTime()).slice(-5).padStart(5, 0),
+    done: false,
+  });
   updateStorage();
   inputTask.value = "";
 });
 const createTask = function (
   textTask,
-  taskIndex = localTasks.length,
+  taskIndex = String(new Date().getTime()).slice(-5).padStart(5, 0),
   done = false,
   isLocal = false
 ) {
@@ -59,9 +63,13 @@ tasks.addEventListener("click", function (e) {
   if (e.target.localName === "input") {
     const taskDone = e.target.closest(".task");
     const textDoneTask = taskDone.querySelector(".text-task");
-    const indexDoneTask = +taskDone.dataset.index;
+    const findTaskIndex = localTasks.findIndex(
+      (t) => t.index === taskDone.dataset.index
+    );
+    console.log(taskDone.dataset.index);
+    localTasks[findTaskIndex].done = !localTasks[findTaskIndex].done;
+    // const getTaskByIndex = localTasks.find(ind=>ind.index === )
     textDoneTask.classList.toggle("done-task");
-    localTasks[indexDoneTask].done = !localTasks[indexDoneTask].done;
     updateStorage();
   }
   // DELETE TASK
@@ -85,5 +93,5 @@ const updateStorage = function () {
 
 if (localTasks.length > 0) {
   task.remove();
-  getLocal.forEach((t) => createTask(t.taskText, t.index, t.done, true));
+  getLocal.forEach((t, i) => createTask(t.taskText, +t.index, t.done, true));
 }
