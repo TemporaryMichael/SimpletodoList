@@ -103,7 +103,7 @@ html {
   transform: scale(110%);
   color: white;
 }
-.task-form input:focus{
+.task-form input:focus {
   outline: 2px solid red;
 }
 
@@ -154,14 +154,15 @@ button {
   .task-form {
     display: flex;
     gap: 10px;
-}
-@media screen and (max-width: 250px) {
-  html {
-    font-size: 7px;
   }
-}
-@media screen and (max-width: 200px) {
-  html {
-    font-size: 8px;
+  @media screen and (max-width: 250px) {
+    html {
+      font-size: 7px;
+    }
+  }
+  @media screen and (max-width: 200px) {
+    html {
+      font-size: 8px;
+    }
   }
 }
