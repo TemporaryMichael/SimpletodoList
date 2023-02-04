@@ -11,7 +11,12 @@ addTask.addEventListener("submit", function (e) {
   e.preventDefault();
   const taskText = inputTask.value;
   if (taskText === "") return;
-  createTask(taskText);
+  createTask(
+    taskText,
+    String(new Date().getTime()).slice(-5).padStart(5, 0),
+    false,
+    false
+  );
   localTasks.push({
     taskText,
     index: String(new Date().getTime()).slice(-5).padStart(5, 0),
@@ -64,7 +69,9 @@ tasks.addEventListener("click", function (e) {
     const taskDone = e.target.closest(".task");
     const textDoneTask = taskDone.querySelector(".text-task");
     const findTaskIndex = localTasks.findIndex(
-      (t) => t.index === taskDone.dataset.index
+      (t) =>
+        t.index === taskDone.dataset.index.padStart(5, 0) ||
+        t.index === String(+taskDone.dataset.index + 1).padStart(5, 0)
     );
     localTasks[findTaskIndex].done = !localTasks[findTaskIndex].done;
     // const getTaskByIndex = localTasks.find(ind=>ind.index === )
