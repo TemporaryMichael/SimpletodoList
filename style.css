@@ -1,0 +1,151 @@
+:root {
+  --main-color: #8d37ff;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0.6px;
+  box-sizing: border-box;
+}
+*:focus,
+*:focus-visible {
+  outline: 2px solid #4e00b4;
+}
+html {
+  font-size: 10px;
+  color: #5c5c5c;
+  background: linear-gradient(
+    90deg,
+    rgb(235, 124, 255) 0%,
+    var(--main-color) 100%
+  );
+}
+.container {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+.frame {
+  border-radius: 8px;
+  padding: 2.5rem 2.5rem;
+  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.212);
+}
+.task--section {
+  display: flex;
+  flex-direction: column;
+  gap: 4.6rem;
+  width: 40rem;
+
+  background-position: center;
+  background-size: cover;
+}
+.add-task {
+  display: flex;
+  gap: 20px;
+  background-color: white;
+}
+.list-task {
+  background-color: white;
+}
+.add-task .add-task--button {
+  transition: all 0.3s;
+
+  color: white;
+  font-weight: 400;
+  font-size: 1.6rem;
+  background-color: var(--main-color);
+  padding: 1rem 2rem;
+  border: none;
+}
+.frame-button {
+  border-radius: 5px;
+}
+.add-task .input-task--text:focus,
+.add-task .input-task--text:focus-visible,
+.add-task .input-task--text:focus-within {
+  outline: 1.4px solid var(--main-color);
+}
+.add-task .input-task--text {
+  width: 100%;
+  border: none;
+  outline: 1px solid #adadad;
+  border-radius: 5px;
+  padding: 1.5rem;
+}
+.add-task .input-task--text::placeholder {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+.task {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 1rem;
+  margin: 10px 0;
+  border-bottom: 2px solid #3333;
+  transition: 0.5s ease;
+  transform-origin: left;
+}
+.task .text-task {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: 500;
+  width: 90%;
+}
+
+.remove-task {
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: var(--main-color);
+}
+.remove-task .trash-task {
+  width: 2.4rem;
+  height: 2.4rem;
+  stroke: white;
+}
+button {
+  transition: filter 0.05s;
+}
+.button-hov:hover,
+.add-task--button:hover {
+  cursor: pointer;
+  filter: brightness(110%);
+}
+.done-task {
+  text-decoration: line-through 1.3px;
+}
+.hidden {
+  opacity: 30%;
+  transform: scale(10%) translateX(-100px);
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 8px;
+  }
+  .add-task {
+    flex-direction: column;
+  }
+  .task--section {
+    background: linear-gradient(
+      90deg,
+      rgb(235, 124, 255) 0%,
+      var(--main-color) 100%
+    );
+  }
+}
+@media screen and (max-width: 250px) {
+  html {
+    font-size: 7px;
+  }
+}
+@media screen and (max-width: 200px) {
+  html {
+    font-size: 8px;
+  }
+}
