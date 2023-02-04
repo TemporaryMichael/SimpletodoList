@@ -33,10 +33,11 @@ html {
   box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.212);
 }
 .task--section {
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   gap: 4.6rem;
-  width: 40rem;
+  min-width: 40rem;
 
   background-position: center;
   background-size: cover;
@@ -127,6 +128,9 @@ button {
 @media screen and (max-width: 400px) {
   html {
     font-size: 8px;
+  }
+  .task--section {
+    width: 100%;
   }
   .add-task {
     flex-direction: column;
