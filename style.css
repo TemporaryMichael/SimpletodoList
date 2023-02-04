@@ -147,6 +147,9 @@ button {
   .add-task .input-task--text {
     padding: 2rem;
   }
+  .task-form {
+    display: flex;
+    gap: 5px;
 }
 @media screen and (max-width: 250px) {
   html {
