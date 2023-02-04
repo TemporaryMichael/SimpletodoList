@@ -138,6 +138,9 @@ button {
   .add-task .add-task--button {
     padding: 2rem 2rem;
   }
+  .add-task .input-task--text {
+    padding: 2rem;
+  }
 }
 @media screen and (max-width: 250px) {
   html {
