@@ -134,7 +134,8 @@ function removeFirstTask() {
 }
 counterUpdate();
 ["mousedown", "touchstart"].forEach((press) => {
-  removeAll.addEventListener(press, function () {
+  removeAll.addEventListener(press, function (e) {
+    e.preventDefault();
     const checkHold = setTimeout(function () {
       localTasks.splice(0);
       const doneTasks = Array.from(tasks.querySelectorAll(".task"));
