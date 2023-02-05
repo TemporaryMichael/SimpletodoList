@@ -133,15 +133,19 @@ function removeFirstTask() {
   });
 }
 counterUpdate();
-removeAll.addEventListener("mousedown", function () {
-  const checkHold = setTimeout(function () {
-    localTasks.splice(0);
-    const doneTasks = Array.from(tasks.querySelectorAll(".task"));
-    doneTasks.forEach((task) => task.remove());
-    createTask("Add your daily tasks", undefined, false, false);
-    updateStorage();
-    uploadTasks();
-    counterUpdate();
-  }, 2000);
-  removeAll.addEventListener("mouseup", () => clearTimeout(checkHold));
+["mousedown", "touchstart"].forEach((press) => {
+  removeAll.addEventListener(press, function () {
+    const checkHold = setTimeout(function () {
+      localTasks.splice(0);
+      const doneTasks = Array.from(tasks.querySelectorAll(".task"));
+      doneTasks.forEach((task) => task.remove());
+      createTask("Add your daily tasks", undefined, false, false);
+      updateStorage();
+      uploadTasks();
+      counterUpdate();
+    }, 2000);
+    ["mouseup", "touchend"].forEach((unpress) => {
+      removeAll.addEventListener(unpress, () => clearTimeout(checkHold));
+    });
+  });
 });
