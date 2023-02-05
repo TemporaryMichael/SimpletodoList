@@ -5,8 +5,8 @@ const tasks = document.querySelector(".list-task");
 const task = document.querySelector(".task");
 const tasksComplited = document.querySelector(".tasks-complited");
 const tasksQuantity = document.querySelector(".tasks-quantity");
-const sampleTask = document.querySelector(".sample-task");
 const removeAll = document.querySelector(".remove-all");
+const timerRemove = document.querySelector(".timer-remove");
 const getLocal = JSON.parse(localStorage.getItem("tasks"));
 const localTasks = getLocal ? getLocal : [];
 addTask.addEventListener("submit", function (e) {
@@ -19,7 +19,6 @@ addTask.addEventListener("submit", function (e) {
     false,
     false
   );
-  removeFirstTask();
   localTasks.push({
     taskText,
     index: String(new Date().getTime()).slice(-5).padStart(5, 0),
@@ -27,6 +26,7 @@ addTask.addEventListener("submit", function (e) {
   });
   counterUpdate();
 
+  removeFirstTask();
   updateStorage();
   inputTask.value = "";
 });
@@ -37,9 +37,7 @@ const createTask = function (
   isLocal = false
 ) {
   const markup = `          
-  <div class="task sample-task ${
-    isLocal ? "" : "hidden"
-  }" data-index = ${taskIndex}>
+  <div class="task ${isLocal ? "" : "hidden"}" data-index = ${taskIndex}>
   <form class="task-form">
     <input type="checkbox" ${done ? "checked" : ""}/>
     <div class="text-task ${done ? "done-task" : ""}">${textTask}</div>
@@ -126,16 +124,29 @@ function counterUpdate() {
   tasksQuantity.textContent = doneTasks.length || 1;
 }
 function removeFirstTask() {
-  const selectTasks = task.querySelectorAll(".text-task");
+  const selectTasks = tasks.querySelectorAll(".text-task");
   selectTasks.forEach((selectTask) => {
-    if (selectTask.textContent === "Add your daily tasks")
+    if (selectTask.textContent === "Add your daily tasks") {
       selectTask.closest(".task").remove();
+    }
+    counterUpdate();
   });
 }
 counterUpdate();
+let timer;
 ["mousedown", "touchstart"].forEach((press) => {
   removeAll.addEventListener(press, function (e) {
     e.preventDefault();
+    let i = 2;
+    timerRemove.innerHTML = `[${i}]`;
+    timer = setInterval(function () {
+      i--;
+      timerRemove.innerHTML = `[${i}]`;
+      if (i < 1) {
+        clearInterval(timer);
+        timerRemove.innerHTML = "";
+      }
+    }, 1000);
     const checkHold = setTimeout(function () {
       localTasks.splice(0);
       const doneTasks = Array.from(tasks.querySelectorAll(".task"));
@@ -146,7 +157,11 @@ counterUpdate();
       counterUpdate();
     }, 2000);
     ["mouseup", "touchend"].forEach((unpress) => {
-      removeAll.addEventListener(unpress, () => clearTimeout(checkHold));
+      removeAll.addEventListener(unpress, () => {
+        clearTimeout(checkHold);
+        clearInterval(timer);
+        timerRemove.innerHTML = "";
+      });
     });
   });
 });
