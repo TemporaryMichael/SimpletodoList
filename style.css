@@ -155,7 +155,8 @@ button {
 }
 .button-hov:hover,
 .add-task--button:hover,
-.remove-all:hover {
+.remove-all:hover,
+.active-remove-button {
   cursor: pointer;
   filter: brightness(110%);
 }

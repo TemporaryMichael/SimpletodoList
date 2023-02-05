@@ -136,7 +136,19 @@ counterUpdate();
 let timer;
 ["mousedown", "touchstart"].forEach((press) => {
   removeAll.addEventListener(press, function (e) {
+    removeAll.classList.add("active-remove-button");
     e.preventDefault();
+    const checkHold = setTimeout(function () {
+      localTasks.splice(0);
+      const doneTasks = Array.from(tasks.querySelectorAll(".task"));
+      removeAll.classList.remove("active-remove-button");
+
+      doneTasks.forEach((task) => task.remove());
+      createTask("Add your daily tasks", undefined, false, false);
+      updateStorage();
+      uploadTasks();
+      counterUpdate();
+    }, 2000);
     let i = 2;
     timerRemove.innerHTML = `[${i}]`;
     timer = setInterval(function () {
@@ -147,20 +159,13 @@ let timer;
         timerRemove.innerHTML = "";
       }
     }, 1000);
-    const checkHold = setTimeout(function () {
-      localTasks.splice(0);
-      const doneTasks = Array.from(tasks.querySelectorAll(".task"));
-      doneTasks.forEach((task) => task.remove());
-      createTask("Add your daily tasks", undefined, false, false);
-      updateStorage();
-      uploadTasks();
-      counterUpdate();
-    }, 2000);
+
     ["mouseup", "touchend"].forEach((unpress) => {
       removeAll.addEventListener(unpress, () => {
         clearTimeout(checkHold);
         clearInterval(timer);
         timerRemove.innerHTML = "";
+        removeAll.classList.remove("active-remove-button");
       });
     });
   });
