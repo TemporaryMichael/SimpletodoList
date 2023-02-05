@@ -3,11 +3,12 @@ const inputTask = document.querySelector(".input-task--text");
 const addTask = document.querySelector(".add-task");
 const tasks = document.querySelector(".list-task");
 const task = document.querySelector(".task");
+const tasksComplited = document.querySelector(".tasks-complited");
+const tasksQuantity = document.querySelector(".tasks-quantity");
 const sampleTask = document.querySelector(".sample-task");
 const getLocal = JSON.parse(localStorage.getItem("tasks"));
 const localTasks = getLocal ? getLocal : [];
 addTask.addEventListener("submit", function (e) {
-  if (sampleTask) sampleTask.remove();
   e.preventDefault();
   const taskText = inputTask.value;
   if (taskText === "") return;
@@ -17,11 +18,14 @@ addTask.addEventListener("submit", function (e) {
     false,
     false
   );
+  removeFirstTask();
   localTasks.push({
     taskText,
     index: String(new Date().getTime()).slice(-5).padStart(5, 0),
     done: false,
   });
+  counterUpdate();
+
   updateStorage();
   inputTask.value = "";
 });
@@ -56,6 +60,7 @@ const createTask = function (
     </svg>
   </button>
 </div>`;
+
   tasks.insertAdjacentHTML("beforeend", markup);
   setTimeout(function () {
     tasks.lastChild.classList.remove("hidden");
@@ -79,6 +84,7 @@ tasks.addEventListener("click", function (e) {
     // const getTaskByIndex = localTasks.find(ind=>ind.index === )
     textDoneTask.classList.toggle("done-task");
     updateStorage();
+    counterUpdate();
   }
   // DELETE TASK
   if (e.target.closest(".remove-task")) {
@@ -91,8 +97,10 @@ tasks.addEventListener("click", function (e) {
     updateStorage();
     setTimeout(() => {
       selectTask.remove();
-      if (localTasks.length <= 0)
+      counterUpdate();
+      if (!tasks.querySelector(".task")) {
         createTask("Add your daily tasks", undefined, false, false);
+      }
     }, 300);
   }
 });
@@ -105,3 +113,20 @@ if (localTasks.length > 0) {
   task.remove();
   getLocal.forEach((t, i) => createTask(t.taskText, +t.index, t.done, true));
 }
+function counterUpdate() {
+  const doneTasks = Array.from(tasks.querySelectorAll(".text-task"));
+  const counter = doneTasks.reduce(
+    (curr, don) => curr + don.classList.contains("done-task"),
+    0
+  );
+  tasksComplited.textContent = counter;
+  tasksQuantity.textContent = doneTasks.length || 1;
+}
+function removeFirstTask() {
+  const selectTasks = task.querySelectorAll(".text-task");
+  selectTasks.forEach((selectTask) => {
+    if (selectTask.textContent === "Add your daily tasks")
+      selectTask.closest(".task").remove();
+  });
+}
+counterUpdate();

@@ -1,7 +1,7 @@
 :root {
   --main-color: #339af0;
   --lighten-color: #a5d8ff;
-  --darken-color: #364fc7;
+  --darken-color: #1c7ed6;
 }
 * {
   margin: 0;
@@ -10,6 +10,7 @@
   letter-spacing: 0.6px;
   box-sizing: border-box;
 }
+
 *:focus,
 *:focus-visible {
   outline: 2px solid var(--darken-color);
@@ -58,8 +59,12 @@ html {
   background-color: white;
 }
 .list-task {
+  position: relative;
   background-color: white;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .add-task .add-task--button {
   transition: all 0.3s;
@@ -73,6 +78,18 @@ html {
 }
 .frame-button {
   border-radius: 5px;
+  background: radial-gradient(
+    rgba(80, 80, 80, 0.055),
+    rgba(255, 255, 255, 0.168)
+  );
+}
+
+.tasks-counter {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 2rem;
+  font-weight: bold;
 }
 .add-task .input-task--text:focus,
 .add-task .input-task--text:focus-visible,
@@ -148,6 +165,7 @@ button {
   opacity: 30%;
   transform: scale(80%) translateX(-100px) rotateY(-60deg);
 }
+
 @media screen and (max-width: 400px) {
   html {
     font-size: 8px;
