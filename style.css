@@ -154,7 +154,8 @@ button {
   transition: filter 0.05s;
 }
 .button-hov:hover,
-.add-task--button:hover {
+.add-task--button:hover,
+.remove-all:hover {
   cursor: pointer;
   filter: brightness(110%);
 }
@@ -164,6 +165,15 @@ button {
 .hidden {
   opacity: 30%;
   transform: scale(80%) translateX(-100px) rotateY(-60deg);
+}
+.remove-all {
+  transition: filter 0.1s;
+  background-color: #e03131;
+  padding: 15px 20px;
+  font-size: 18px;
+  color: white;
+  border: 1px solid black;
+  font-weight: 500;
 }
 
 @media screen and (max-width: 400px) {

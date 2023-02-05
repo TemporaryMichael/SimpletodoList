@@ -6,6 +6,7 @@ const task = document.querySelector(".task");
 const tasksComplited = document.querySelector(".tasks-complited");
 const tasksQuantity = document.querySelector(".tasks-quantity");
 const sampleTask = document.querySelector(".sample-task");
+const removeAll = document.querySelector(".remove-all");
 const getLocal = JSON.parse(localStorage.getItem("tasks"));
 const localTasks = getLocal ? getLocal : [];
 addTask.addEventListener("submit", function (e) {
@@ -108,11 +109,13 @@ tasks.addEventListener("click", function (e) {
 const updateStorage = function () {
   localStorage.setItem("tasks", JSON.stringify(localTasks));
 };
-
-if (localTasks.length > 0) {
-  task.remove();
-  getLocal.forEach((t, i) => createTask(t.taskText, +t.index, t.done, true));
+function uploadTasks() {
+  if (localTasks.length > 0) {
+    task.remove();
+    getLocal.forEach((t, i) => createTask(t.taskText, +t.index, t.done, true));
+  }
 }
+uploadTasks();
 function counterUpdate() {
   const doneTasks = Array.from(tasks.querySelectorAll(".text-task"));
   const counter = doneTasks.reduce(
@@ -130,3 +133,15 @@ function removeFirstTask() {
   });
 }
 counterUpdate();
+removeAll.addEventListener("mousedown", function () {
+  const checkHold = setTimeout(function () {
+    localTasks.splice(0);
+    const doneTasks = Array.from(tasks.querySelectorAll(".task"));
+    doneTasks.forEach((task) => task.remove());
+    createTask("Add your daily tasks", undefined, false, false);
+    updateStorage();
+    uploadTasks();
+    counterUpdate();
+  }, 2000);
+  removeAll.addEventListener("mouseup", () => clearTimeout(checkHold));
+});
