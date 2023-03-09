@@ -47,7 +47,7 @@ const changeTaskStatus = (e) => {
   }
 };
 
-const removeFirstTask = () => {
+const deleteFirstTask = () => {
   const selectTasks = tasks.querySelectorAll(".task");
   selectTasks.forEach((selectTask) => {
     if (+selectTask.dataset.index === 0) {
@@ -73,16 +73,6 @@ const generateFirstTask = () => {
   generateTask("Add your daily tasks", 0, false, false);
 };
 
-// Submit task
-addTask.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const taskText = inputTask.value;
-  if (taskText.trim().length === 0) return;
-  createTask(taskText, generateID());
-  counterUpdate();
-  updateStorage();
-  inputTask.value = "";
-});
 const createTask = (taskText, id = generateID()) => {
   generateTask(taskText, id, false, false);
   addToStorage(taskText, id);
@@ -118,20 +108,12 @@ const generateTask = function (
   </button>
 </div>`;
 
-  removeFirstTask();
+  deleteFirstTask();
   tasks.insertAdjacentHTML("beforeend", markup);
   setTimeout(function () {
     tasks.lastChild.classList.remove("hidden");
   }, 10);
 };
-
-// Click Events
-tasks.addEventListener("click", function (e) {
-  // DONE TASK
-  changeTaskStatus(e);
-  // DELETE TASK
-  deleteTask(e);
-});
 
 const updateStorage = function () {
   localStorage.setItem("tasks", JSON.stringify(localTasks));
@@ -160,9 +142,30 @@ const updateAll = () => {
 };
 
 /// init
-uploadTasks();
+const init = () => {
+  uploadTasks();
+  updateAll();
+};
 
-updateAll();
+init();
+
+// Click Events
+tasks.addEventListener("click", function (e) {
+  // DONE TASK
+  changeTaskStatus(e);
+  // DELETE TASK
+  deleteTask(e);
+});
+// Submit task
+addTask.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const taskText = inputTask.value;
+  if (taskText.trim().length === 0) return;
+  createTask(taskText, generateID());
+  counterUpdate();
+  updateStorage();
+  inputTask.value = "";
+});
 
 // Timer for removeAll button
 let timer;

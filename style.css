@@ -1,7 +1,7 @@
 :root {
-  --main-color: #339af0;
-  --lighten-color: #a5d8ff;
-  --darken-color: #1c7ed6;
+  --main-color: #009f9f;
+  --lighten-color: #009f9f;
+  --darken-color: #006969;
 }
 * {
   margin: 0;
@@ -25,11 +25,8 @@
 html {
   font-size: 10px;
   color: #5c5c5c;
-  background: linear-gradient(
-    90deg,
-    var(--lighten-color) 0%,
-    var(--main-color) 100%
-  );
+  background-image: url(mountains.jpg);
+  background-attachment: fixed;
   background-position: center;
   background-size: cover;
 }
