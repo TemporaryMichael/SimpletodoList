@@ -1,0 +1,28 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "Simple page for save your daily tasks",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TemporaryMichael/SimpletodoList.git"
+  },
+  "author": "Michał",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TemporaryMichael/SimpletodoList/issues"
+  },
+  "homepage": "https://github.com/TemporaryMichael/SimpletodoList#readme",
+  "dependencies": {
+    "parcel": "^2.8.3"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.8.3",
+    "@parcel/transformer-webmanifest": "^2.8.3"
+  }
+}

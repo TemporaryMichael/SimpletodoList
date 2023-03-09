@@ -7,36 +7,94 @@ const tasksComplited = document.querySelector(".tasks-complited");
 const tasksQuantity = document.querySelector(".tasks-quantity");
 const removeAll = document.querySelector(".remove-all");
 const timerRemove = document.querySelector(".timer-remove");
-const getLocal = JSON.parse(localStorage.getItem("tasks"));
-const localTasks = getLocal ? getLocal : [];
+const localTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+// Delete Task
+const deleteTask = (e) => {
+  if (e.target.closest(".remove-task")) {
+    const selectTask = e.target.closest(".task");
+    localTasks.splice(
+      localTasks.findIndex((ind) => +ind.index === +selectTask.dataset.index),
+      1
+    );
+    selectTask.classList.add("hidden");
+    updateStorage();
+    setTimeout(() => {
+      selectTask.remove();
+      counterUpdate();
+      if (!tasks.querySelector(".task")) {
+        generateFirstTask();
+      }
+    }, 300);
+  }
+};
+
+const changeTaskStatus = (e) => {
+  if (!e.target.closest(".task")) return;
+  if (!e.target.closest(".remove-task")) {
+    const taskDone = e.target.closest(".task");
+    const uncheckTask = taskDone.querySelector("input");
+    if (!e.target.closest("input")) uncheckTask.checked = !uncheckTask.checked;
+    const textDoneTask = taskDone.querySelector(".text-task");
+    const findTaskIndex = localTasks.findIndex(
+      (t) => t.index === taskDone.dataset.index.padStart(5, 0)
+    );
+    if (findTaskIndex >= 0)
+      localTasks[findTaskIndex].done = !localTasks[findTaskIndex].done;
+    textDoneTask.classList.toggle("done-task");
+    updateStorage();
+    counterUpdate();
+  }
+};
+
+const removeFirstTask = () => {
+  const selectTasks = tasks.querySelectorAll(".task");
+  selectTasks.forEach((selectTask) => {
+    if (+selectTask.dataset.index === 0) {
+      selectTask.closest(".task").remove();
+    }
+    counterUpdate();
+  });
+};
+
+const generateID = () => {
+  return String(new Date().getTime()).slice(-9).padStart(5, 0);
+};
+
+const addToStorage = (taskText, index) => {
+  localTasks.push({
+    taskText,
+    index,
+    done: false,
+  });
+};
+
+const generateFirstTask = () => {
+  generateTask("Add your daily tasks", 0, false, false);
+};
+
+// Submit task
 addTask.addEventListener("submit", function (e) {
   e.preventDefault();
   const taskText = inputTask.value;
-  if (taskText === "") return;
-  createTask(
-    taskText,
-    String(new Date().getTime()).slice(-5).padStart(5, 0),
-    false,
-    false
-  );
-  localTasks.push({
-    taskText,
-    index: String(new Date().getTime()).slice(-5).padStart(5, 0),
-    done: false,
-  });
+  if (taskText.trim().length === 0) return;
+  createTask(taskText, generateID());
   counterUpdate();
-
-  removeFirstTask();
   updateStorage();
   inputTask.value = "";
 });
-const createTask = function (
+const createTask = (taskText, id = generateID()) => {
+  generateTask(taskText, id, false, false);
+  addToStorage(taskText, id);
+};
+
+const generateTask = function (
   textTask,
-  taskIndex = String(new Date().getTime()).slice(-5).padStart(5, 0),
+  taskIndex = generateID(),
   done = false,
   isLocal = false
 ) {
-  const markup = `          
+  const markup = `
   <div class="task ${isLocal ? "" : "hidden"}" data-index = ${taskIndex}>
   <form class="task-form">
     <input type="checkbox" ${done ? "checked" : ""}/>
@@ -60,48 +118,19 @@ const createTask = function (
   </button>
 </div>`;
 
+  removeFirstTask();
   tasks.insertAdjacentHTML("beforeend", markup);
   setTimeout(function () {
     tasks.lastChild.classList.remove("hidden");
   }, 10);
 };
+
+// Click Events
 tasks.addEventListener("click", function (e) {
   // DONE TASK
-  if (!e.target.closest(".task")) return;
-  if (!e.target.closest(".remove-task")) {
-    const taskDone = e.target.closest(".task");
-    const uncheckTask = taskDone.querySelector("input");
-    if (!e.target.closest("input")) uncheckTask.checked = !uncheckTask.checked;
-    const textDoneTask = taskDone.querySelector(".text-task");
-    const findTaskIndex = localTasks.findIndex(
-      (t) =>
-        t.index === taskDone.dataset.index.padStart(5, 0) ||
-        t.index === String(+taskDone.dataset.index + 1).padStart(5, 0)
-    );
-    if (findTaskIndex >= 0)
-      localTasks[findTaskIndex].done = !localTasks[findTaskIndex].done;
-    // const getTaskByIndex = localTasks.find(ind=>ind.index === )
-    textDoneTask.classList.toggle("done-task");
-    updateStorage();
-    counterUpdate();
-  }
+  changeTaskStatus(e);
   // DELETE TASK
-  if (e.target.closest(".remove-task")) {
-    const selectTask = e.target.closest(".task");
-    localTasks.splice(
-      localTasks.findIndex((ind) => +ind.index === +selectTask.dataset.index),
-      1
-    );
-    selectTask.classList.add("hidden");
-    updateStorage();
-    setTimeout(() => {
-      selectTask.remove();
-      counterUpdate();
-      if (!tasks.querySelector(".task")) {
-        createTask("Add your daily tasks", undefined, false, false);
-      }
-    }, 300);
-  }
+  deleteTask(e);
 });
 
 const updateStorage = function () {
@@ -109,11 +138,11 @@ const updateStorage = function () {
 };
 function uploadTasks() {
   if (localTasks.length > 0) {
-    task.remove();
-    getLocal.forEach((t, i) => createTask(t.taskText, +t.index, t.done, true));
-  }
+    localTasks.forEach((t, i) =>
+      generateTask(t.taskText, +t.index, t.done, true)
+    );
+  } else generateFirstTask();
 }
-uploadTasks();
 function counterUpdate() {
   const doneTasks = Array.from(tasks.querySelectorAll(".text-task"));
   const counter = doneTasks.reduce(
@@ -123,17 +152,22 @@ function counterUpdate() {
   tasksComplited.textContent = counter;
   tasksQuantity.textContent = doneTasks.length || 1;
 }
-function removeFirstTask() {
-  const selectTasks = tasks.querySelectorAll(".text-task");
-  selectTasks.forEach((selectTask) => {
-    if (selectTask.textContent === "Add your daily tasks") {
-      selectTask.closest(".task").remove();
-    }
-    counterUpdate();
-  });
-}
-counterUpdate();
+
+// Update Counter and Local Storage
+const updateAll = () => {
+  counterUpdate();
+  updateStorage();
+};
+
+/// init
+uploadTasks();
+
+updateAll();
+
+// Timer for removeAll button
 let timer;
+
+// Remove all Timer
 ["mousedown", "touchstart"].forEach((press) => {
   removeAll.addEventListener(press, function (e) {
     removeAll.classList.add("active-remove-button");
@@ -144,10 +178,8 @@ let timer;
       removeAll.classList.remove("active-remove-button");
 
       doneTasks.forEach((task) => task.remove());
-      createTask("Add your daily tasks", undefined, false, false);
-      updateStorage();
-      uploadTasks();
-      counterUpdate();
+      generateFirstTask();
+      updateAll();
     }, 2000);
     let i = 2;
     timerRemove.innerHTML = `[${i}]`;
