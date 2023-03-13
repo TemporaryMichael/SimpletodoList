@@ -25,16 +25,14 @@
 html {
   font-size: 10px;
   color: #5c5c5c;
-}
-.container {
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
   background-image: url(../img/background/background.jpg);
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
+}
+.container {
+  display: flex;
+  justify-content: center;
 }
 
 .frame {
