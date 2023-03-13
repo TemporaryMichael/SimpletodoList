@@ -25,14 +25,16 @@
 html {
   font-size: 10px;
   color: #5c5c5c;
-  background-image: url(../img/background.jpg);
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
 }
 .container {
   display: flex;
   justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url(../img/background/background.jpg);
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
 }
 
 .frame {
@@ -40,6 +42,7 @@ html {
   padding: 2.5rem 2.5rem;
   box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.212);
 }
+
 .task--section {
   margin-top: 100px;
   display: flex;

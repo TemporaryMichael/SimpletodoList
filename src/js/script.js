@@ -141,14 +141,6 @@ const updateAll = () => {
   updateStorage();
 };
 
-/// init
-const init = () => {
-  uploadTasks();
-  updateAll();
-};
-
-init();
-
 // Click Events
 tasks.addEventListener("click", function (e) {
   // DONE TASK
@@ -205,3 +197,11 @@ let timer;
     });
   });
 });
+
+/// init
+const init = () => {
+  uploadTasks();
+  updateAll();
+};
+
+init();
